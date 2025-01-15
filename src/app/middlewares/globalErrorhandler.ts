@@ -60,4 +60,13 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     ]
   }
 
-  
+  // Return formatted error response
+  res.status(statusCode).json({
+    success: false,
+    message,
+    errorMessages,
+    stack: config.node_env === 'development' ? err.stack : undefined,
+  })
+}
+
+export default globalErrorHandler
