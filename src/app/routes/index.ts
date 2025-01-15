@@ -4,33 +4,13 @@ import { Router } from "express"
 
 const router = Router()
 
-const moduleRoutes = [
-  {
-    path: '/',
-    route: UserRoutes,
-  },
+// const moduleRoutes = [
 //   {
-//     path: '/auth',
-//     route: AuthRoutes,
+//     path: '/',
+//     route: UserRoutes,
 //   },
-//   {
-//     path: '/bookings',
-//     route: BookingsRoutes,
-//   },
-//   {
-//     path: '/payment',
-//     route: PaymentRoutes,
-//   },
-//   {
-//     path: '/post',
-//     route: PostRoutes,
-//   },
-//   {
-//     path: '/comment',
-//     route: CommentRoutes,
-//   },
-]
+// ]
 
-moduleRoutes.forEach((route) => router.use(route.path, route.route))
+// moduleRoutes.forEach((route) => router.use(route.path, route.route))
 
 export default router
