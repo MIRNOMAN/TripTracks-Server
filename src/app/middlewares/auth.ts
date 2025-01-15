@@ -30,4 +30,28 @@ const auth = (...requiredRoles: TUserRole[]) => {
     // console.log(email)
 
     // checking if the user is exist
-  
+    const user = await User.isUserExistsByEmail(email)
+
+    if (!user) {
+      return res.status(httpStatus.UNAUTHORIZED).json({
+        success: false,
+        statusCode: httpStatus.UNAUTHORIZED,
+        message: 'You have no access to this route',
+      })
+    }
+    // checking if the user is already deleted
+
+    if (requiredRoles && !requiredRoles.includes(role)) {
+      return res.status(httpStatus.UNAUTHORIZED).json({
+        success: false,
+        statusCode: httpStatus.UNAUTHORIZED,
+        message: 'You have no access to this route',
+      })
+    }
+
+    req.user = decoded as JwtPayload
+    next()
+  })
+}
+
+export default auth
