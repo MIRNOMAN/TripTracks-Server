@@ -13,3 +13,11 @@ const createUserIntoDb = async (userData: TUser) => {
     })
     return result
   }
+
+  const updateUserRoleIntoDB = async (id: string, payload: Partial<TUser>) => {
+    const result = await User.findByIdAndUpdate(id, payload, {
+      new: true,
+      runValidators: true,
+    })
+    return result
+  }
