@@ -18,3 +18,13 @@ const createUser = catchAsync(async (req, res) => {
       data: result,
     })
   })
+
+  const getAllUser = catchAsync(async (req, res) => {
+    const result = await User.find()
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User retrieved successfully',
+      data: result,
+    })
+  })
