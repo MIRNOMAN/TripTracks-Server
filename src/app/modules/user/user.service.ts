@@ -96,3 +96,15 @@ const createUserIntoDb = async (userData: TUser) => {
       return 'Followed successfully'
     }
   }
+
+  const getFollowersFromDB = async (id: string) => {
+    // Find the user by ID and populate the followers field
+    const userWithFollowers = await User.findById(id)
+      .populate('followers', 'name email avatar') // Specify the fields you want from the follower
+      .select('followers')
+  
+    if (!userWithFollowers) {
+      throw new Error('User not found')
+    }
+    return userWithFollowers
+  }
