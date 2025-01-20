@@ -108,3 +108,27 @@ const createUserIntoDb = async (userData: TUser) => {
     }
     return userWithFollowers
   }
+
+  const getFollowingFromDB = async (id: string) => {
+    // Find the user by ID and populate the followers field
+    const userWithFollowing = await User.findById(id)
+      .populate('following', 'name email avatar') // Specify the fields you want from the follower
+      .select('followers')
+  
+    if (!userWithFollowing) {
+      throw new Error('User not found')
+    }
+    return userWithFollowing
+  }
+  
+  export const userServices = {
+    createUserIntoDb,
+    getMyBookingsFromDb,
+    getUserFromDB,
+    getUserByIdFromDB,
+    updateUserIntoDB,
+    updateUserRoleIntoDB,
+    followUser,
+    getFollowersFromDB,
+    getFollowingFromDB,
+  }
