@@ -29,3 +29,14 @@ const createUserIntoDb = async (userData: TUser) => {
     )
     return result
   }
+
+  const getUserByIdFromDB = async (id: string) => {
+    const result = await User.findById(id).populate(
+      'following followers',
+      '_id name avatar',
+    )
+    if (!result) {
+      throw new Error('User not found!')
+    }
+    return result
+  }
