@@ -65,3 +65,15 @@ const createUser = catchAsync(async (req, res) => {
       data: result,
     })
   })
+
+
+  const getUserById = catchAsync(async (req, res) => {
+    const { id } = req.params
+    const result = await userServices.getUserByIdFromDB(id)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User retrieved successfully',
+      data: result,
+    })
+  })
