@@ -45,3 +45,18 @@ export type TFollow = {
     updatedAt: string // ISO 8601 date string
     __v: number
   }
+
+
+  // Define the response type
+export interface TGetBookingsResponse {
+    success: boolean
+    statusCode: number
+    message: string
+    data: IBooking[]
+  }
+  
+  export type TRecoverPassword = {
+    email: string
+    phone: string
+    password: string
+  }
