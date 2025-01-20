@@ -21,3 +21,11 @@ const createUserIntoDb = async (userData: TUser) => {
     })
     return result
   }
+
+  const getUserFromDB = async (email: string) => {
+    const result = await User.findOne({ email }).populate(
+      'following followers',
+      '_id name avatar',
+    )
+    return result
+  }
