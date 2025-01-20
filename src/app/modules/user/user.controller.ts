@@ -28,3 +28,40 @@ const createUser = catchAsync(async (req, res) => {
       data: result,
     })
   })
+
+
+  const getSiteStatistics = catchAsync(async (req, res) => {
+    const totalUsers = await User.countDocuments()
+    const totalPremiumUsers = await User.countDocuments({ status: 'premium' })
+    const totalBasicUsers = await User.countDocuments({ status: 'basic' })
+  
+    const totalContents = await Post.countDocuments()
+    const totalInactiveContents = await Post.countDocuments({ isActive: false })
+  
+    const result = {
+      totalUsers: totalUsers,
+      totalPremiumUsers: totalPremiumUsers,
+      totalBasicUsers: totalBasicUsers,
+      totalContents: totalContents,
+      totalActiveContents: totalContents - totalInactiveContents,
+      totalInactiveContents: totalInactiveContents,
+    }
+  
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Site statistics retrieved successfully',
+      data: result,
+    })
+  })
+  const getUserByEmail = catchAsync(async (req, res) => {
+    const token = req.headers.authorization
+    const { email } = getUserInfoFromToken(token as string)
+    const result = await userServices.getUserFromDB(email)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User retrieved successfully',
+      data: result,
+    })
+  })
