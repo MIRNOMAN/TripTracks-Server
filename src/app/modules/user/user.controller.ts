@@ -124,3 +124,22 @@ const createUser = catchAsync(async (req, res) => {
       data: result,
     })
   })
+
+
+  const getMyBookings = catchAsync(async (req, res) => {
+    const token = req.headers.authorization
+    const { email } = getUserInfoFromToken(token as string)
+  
+    const result = await userServices.getMyBookingsFromDb(email)
+  
+    if (!result || result?.length === 0) {
+      return handleNoDataResponse(res)
+    }
+  
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User bookings retrieved successfully',
+      data: result,
+    })
+  })
