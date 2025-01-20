@@ -143,3 +143,15 @@ const createUser = catchAsync(async (req, res) => {
       data: result,
     })
   })
+
+
+  const follow = catchAsync(async (req, res) => {
+    const payload = req.body
+    const result = await userServices.followUser(payload)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User retrieved successfully',
+      data: result,
+    })
+  })
