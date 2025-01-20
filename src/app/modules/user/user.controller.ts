@@ -109,3 +109,18 @@ const createUser = catchAsync(async (req, res) => {
       data: result,
     })
   })
+
+
+  const updateUserRole = catchAsync(async (req, res) => {
+    const { id } = req.params
+    const userInfo = req.body
+    console.log(id, userInfo)
+    const result = await userServices.updateUserIntoDB(id, userInfo)
+  
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User updated successfully',
+      data: result,
+    })
+  })
