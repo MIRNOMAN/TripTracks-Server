@@ -23,3 +23,15 @@ router.get(
   auth(USER_ROLE.admin),
   userControllers.getSiteStatistics,
 )
+
+router.put(
+    '/update-user/:id',
+    auth(USER_ROLE.admin, USER_ROLE.user),
+    multerUpload.fields([{ name: 'avatar' }]),
+    parseBody,
+    validateRequest(UserValidations.updateUserValidationSchema),
+    userControllers.updateUser,
+  )
+  router.put('/update-user-role/:id', userControllers.updateUserRole)
+  
+  export const UserRoutes = router
