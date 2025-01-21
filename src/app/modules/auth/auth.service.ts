@@ -52,3 +52,36 @@ const loginUser = async (payload: TLoginUser) => {
     }
   }
   
+  const refreshToken = async (id: string) => {
+    const user = await User.findById(id)
+    if (!user) {
+      throw new Error('User not available')
+    }
+    return generateToken(user)
+  }
+  
+  const hashPassword = async (password: string): Promise<string> => {
+    return await bcrypt.hash(password, Number(config.bcrypt_salt_rounds))
+  }
+  
+  const recoverPasswordIntoDB = async (payload: TRecoverPassword) => {
+    const { email, phone, password } = payload
+    const isUserAvailable = await User.findOne({ email })
+    if (!isUserAvailable) {
+      throw new Error('User not available!')
+    }
+    if (phone === isUserAvailable.phone) {
+      const hashedPassword = await bcrypt.hash(
+        password,
+        Number(config.bcrypt_salt_rounds),
+      )
+      const updateUserPassword = await User.findOneAndUpdate(
+        { email }, // Find the user by email
+        { password: hashedPassword }, // Update the password field
+        { new: true }, // Return the updated user
+      )
+      return updateUserPassword
+    } else {
+      throw new Error('You are not authorized!')
+    }
+  }
