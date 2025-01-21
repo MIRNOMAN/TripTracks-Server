@@ -32,4 +32,15 @@ const passwordRecover = catchAsync(async (req, res) => {
     data: result,
   })
 })
-           
+const changePassword = catchAsync(async (req, res) => {
+    const token = req.headers.authorization
+    const { email } = getUserInfoFromToken(token as string)
+    const { password } = req.body
+    const result = await AuthServices.changePasswordIntoDB(email, password)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Password updated successfully',
+      data: result,
+    })
+  }) 
