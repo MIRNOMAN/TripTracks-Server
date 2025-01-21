@@ -85,3 +85,20 @@ const loginUser = async (payload: TLoginUser) => {
       throw new Error('You are not authorized!')
     }
   }
+
+  const changePasswordIntoDB = async (email: string, payload: string) => {
+    const hashedPassword = await hashPassword(payload)
+    const changeUserPassword = await User.findOneAndUpdate(
+      { email }, // Find the user by email
+      { password: hashedPassword }, // Update the password field
+      { new: true }, // Return the updated user
+    )
+    return changeUserPassword
+  }
+  
+  export const AuthServices = {
+    loginUser,
+    recoverPasswordIntoDB,
+    changePasswordIntoDB,
+    refreshToken,
+  }
