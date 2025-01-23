@@ -25,3 +25,25 @@ const createPost = catchAsync(async (req, res) => {
     data: result,
   })
 })
+
+const updatePost = catchAsync(async (req, res) => {
+    const { id } = req.params
+    const postInfo = req.body
+  
+    const file = req.file as TImageFile
+    const imagePath = file?.path
+  
+    const payload: Partial<TPost> = {
+      ...postInfo,
+      ...(imagePath ? { cover: imagePath } : {}),
+    }
+  
+    const result = await postServices.updatePostIntoDB(id, payload)
+  
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Post updated successfully',
+      data: result,
+    })
+  })
