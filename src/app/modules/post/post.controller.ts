@@ -70,3 +70,15 @@ const updatePost = catchAsync(async (req, res) => {
       data: result,
     })
   })
+
+  const getPostsByAuthor = catchAsync(async (req, res) => {
+    const { id } = req.params
+    const result = await postServices.getPostsByAuthorFromDB(id)
+  
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Posts retrieved successfully',
+      data: result,
+    })
+  })
