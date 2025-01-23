@@ -47,3 +47,15 @@ const updatePost = catchAsync(async (req, res) => {
       data: result,
     })
   })
+
+  const getAllPosts = catchAsync(async (req, res) => {
+    const query = req.query
+    const result = await postServices.getAllPostsFromDB(query)
+  
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Posts retrieved successfully',
+      data: result,
+    })
+  })
