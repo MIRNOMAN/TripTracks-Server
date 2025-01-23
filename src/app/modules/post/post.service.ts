@@ -63,3 +63,11 @@ interface PostQueryParams {
       .populate('author', '_id name avatar')
     return result
   }
+
+  const updatePostIntoDB = async (id: string, payload: Partial<TPost>) => {
+    const result = await Post.findByIdAndUpdate(id, payload, {
+      new: true,
+      runValidators: true,
+    })
+    return result
+  }
