@@ -7,3 +7,52 @@ const createPostIntoDB = async (payload: TPost) => {
   const result = await Post.create(payload)
   return result
 }
+
+interface PostQueryParams {
+    searchTerm?: string
+    sort?: 'date' | 'vote'
+    category?: string
+    tag?: string
+  }
+  
+  const getAllPostsFromDB = async (query: PostQueryParams) => {
+    const { searchTerm, sort, category, tag } = query
+  
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const filter: any = {
+      isActive: { $ne: false }, // Filter for active posts
+    }
+  
+    // Search by title or content
+    if (searchTerm) {
+      filter.$or = [
+        { title: { $regex: searchTerm, $options: 'i' } },
+        { content: { $regex: searchTerm, $options: 'i' } },
+      ]
+    }
+  
+    // Filter by category
+    if (category) {
+      filter.category = category
+    }
+  
+    // Filter by tag
+    if (tag) {
+      filter.tags = tag
+    }
+  
+    // Declare sortOption as a dynamic object with SortOrder values
+    let sortOption: Record<string, SortOrder> = { createdAt: -1 }
+  
+    // Sort by most votes (i.e., upVotes array length)
+    if (sort === 'vote') {
+      sortOption = { upVotes: -1 }
+    }
+  
+    const result = await Post.find(filter)
+      .populate('author', '_id name email avatar followers status')
+      .sort(sortOption)
+      .select({ comments: 0 })
+  
+    return result
+  }
