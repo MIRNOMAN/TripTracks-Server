@@ -110,3 +110,39 @@ interface PostQueryParams {
       return result
     }
   }
+
+  const downVotePostIntoDB = async (id: string, userId: string) => {
+    const postData = await Post.findById(id)
+    if (!postData) {
+      throw new Error('Post not available!')
+    }
+    const userObjectId = new Types.ObjectId(userId)
+    const isUpVoted = postData.upVotes.includes(userObjectId)
+    if (isUpVoted) {
+      await Post.findByIdAndUpdate(id, {
+        $pull: { upVotes: userId },
+      })
+    }
+    const isVoted = postData.downVotes.includes(userObjectId)
+    if (isVoted) {
+      const result = await Post.findByIdAndUpdate(id, {
+        $pull: { downVotes: userId },
+      })
+      return result
+    } else {
+      const result = await Post.findByIdAndUpdate(id, {
+        $push: { downVotes: userId },
+      })
+      return result
+    }
+  }
+  
+  export const postServices = {
+    createPostIntoDB,
+    getAllPostsFromDB,
+    getPostsByAuthorFromDB,
+    getSinglePostFromDB,
+    updatePostIntoDB,
+    upVotePostIntoDB,
+    downVotePostIntoDB,
+  }
