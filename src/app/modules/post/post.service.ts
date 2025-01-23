@@ -71,3 +71,16 @@ interface PostQueryParams {
     })
     return result
   }
+
+  const getSinglePostFromDB = async (id: string) => {
+    const post = await Post.findById(id)
+      .populate('author', '_id name email avatar')
+      .populate({
+        path: 'comments.commenter',
+        select: '_id name email avatar',
+      })
+    if (!post) {
+      throw new Error('Post not found')
+    }
+    return post
+  }
