@@ -56,3 +56,10 @@ interface PostQueryParams {
   
     return result
   }
+
+  const getPostsByAuthorFromDB = async (id: string) => {
+    const result = await Post.find({ author: id })
+      .select({ comments: 0 })
+      .populate('author', '_id name avatar')
+    return result
+  }
