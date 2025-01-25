@@ -1,18 +1,20 @@
-import mongoose, { Schema } from 'mongoose'
+import { Types } from 'mongoose'
+import Post from '../post/post.model'
 import { TComment } from './comment.interface'
+import Comment from './comment.model'
 
-const commentSchema = new Schema<TComment>(
-  {
-    postId: { type: Schema.Types.ObjectId, ref: 'Post', required: true },
-    userId: { type: Schema.Types.ObjectId, ref: 'user', required: true },
-    feedback: { type: String, required: true },
-  },
-  {
-    timestamps: true,
-  },
-)
+const commentIntoPost = async (id: string, payload: TComment) => {
+  const post = await Post.findById(id)
+  if (!post) {
+    throw new Error('Post not found')
+  }
+  const result = await Comment.create(payload)
 
-// Create the Comment model
-const Comment = mongoose.model<TComment>('Comment', commentSchema)
+  // Increment the commentsCount by 1
+  post.commentsCount = (post.commentsCount || 0) + 1
 
-export default Comment
+  // Save the updated post
+  await post.save()
+
+  return result
+}
