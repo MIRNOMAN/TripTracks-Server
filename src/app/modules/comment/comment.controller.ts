@@ -16,3 +16,15 @@ const postComment = catchAsync(async (req, res) => {
     data: result,
   })
 })
+
+const editPostComment = catchAsync(async (req, res) => {
+    const { id } = req.params
+    const payload = req.body
+    const result = await commentServices.EditCommentIntoPost(id, payload)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Comment updated successfully',
+      data: result,
+    })
+  })
