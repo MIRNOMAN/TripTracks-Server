@@ -5,3 +5,10 @@ export interface TBooking {
   tran_id: string
   status: string
 }
+
+
+export interface TBookingRequest {
+    amount: string
+    status: string
+    tran_id: string
+  }
