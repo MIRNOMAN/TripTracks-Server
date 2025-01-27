@@ -1,9 +1,9 @@
 import { Types } from 'mongoose'
 import { transactionId } from '../../utils/utils'
-import { initiatePayment } from '../payment/payment.utils'
 import { User } from '../user/user.model'
 import { TBooking, TBookingRequest } from './booking.interface'
 import { Booking } from './booking.model'
+import { initiatePayment } from '../payment/payment.utils'
 
 const createBookingIntoDB = async (
   email: string,
